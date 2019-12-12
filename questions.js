@@ -42,7 +42,7 @@ $("#start-button").on("click", function () {
   $("#quiz-container").show();
   setNextQuestion();
   // timer
-  let timeLeft = 30;
+  let timeLeft = 45;
   let downloadTimer = setInterval(function () {
     $("#time").html("Time: " + timeLeft + " seconds remaining");
     timeLeft -= 1;
@@ -50,8 +50,7 @@ $("#start-button").on("click", function () {
       clearInterval(downloadTimer);
       $("#time").html("Finished");
       $("#quiz-container").hide();
-      $("#all-done").show();
-      $("#finalScore").html("Your final score is " + correct + "!");
+      allDone();
     }
   }, 1000);
   // when any answer is clicked, do this...
@@ -80,7 +79,7 @@ $("#start-button").on("click", function () {
       setNextQuestion();
     } else {
       $("#quiz-container").hide();
-      $("#all-done").show();
+      allDone();
     }
   });
 })
@@ -95,4 +94,7 @@ function setNextQuestion() {
   console.log('currentIndex', currentIndex);
 }
 
-
+function allDone (){
+  $("#all-done").show();
+  $("#finalScore").html("Your final score is " + correct + "!");
+}

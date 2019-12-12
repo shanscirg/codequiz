@@ -30,8 +30,8 @@
         <div class="container">
             <h1 class="display-4 text-center">Coding Quiz</h1>
             <p class="lead text-center">Answer the following basic coding questions as accurately and quickly as you
-                can!
-                Be careful... Wrong answers will hurt your score and dock your time!</p>
+                can!</p>
+            <p class="lead text-center">Be careful... Wrong answers will hurt your score and dock your time!</p>
             <div class="text-center">
                 <button type="button" id="start-button" class="btn btn-primary btn-lg">Start Quiz!</button>
             </div>
@@ -46,8 +46,30 @@
             <p><button id="option2" class="nextQuestion">2. </button></p>
             <p><button id="option3" class="nextQuestion">3. </button></p>
             <p><button id="option4" class="nextQuestion">4. </button></p>
+            <hr id="hr">
+            <div id="correctIncorrect"></div>
         </div>
     </div>
+
+    <div class="jumbotron jumbotron-fluid" id="all-done">
+        <div class="container">
+            <h3 class="display-4">All done!</h3>
+            <p id="finalScore"></p>
+            <form class="form-inline" id="enterInitials">
+                <div class="form-group mb-2">
+                    <label for="staticEmail2" class="sr-only">Initials</label>
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2"
+                        value="Enter initials:">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="inputPassword2" class="sr-only"></label>
+                    <input type="text" class="form-control" id="inputPassword2">
+                </div>
+                <button onclick="highscore.html" type="submit" class="btn btn-primary mb-2" id="submitInitials">Submit</button>
+            </form>
+        </div>
+    </div>
+
 
     <script src="questions.js"></script>
 </body>

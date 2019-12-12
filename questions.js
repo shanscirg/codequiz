@@ -29,8 +29,12 @@ let questions = [
 
 $("#quiz-container").hide();
 $("#all-done").hide();
+$(".correct").hide();
+$(".incorrect").hide();
 
-let currentIndex = 0
+let currentIndex = 0;
+let correct = 0;
+let incorrect = 0;
 
 $("#start-button").on("click", function () {
   console.log("The button works!");
@@ -38,12 +42,11 @@ $("#start-button").on("click", function () {
   $("#quiz-container").show();
   setNextQuestion();
   // timer
-  let timeLeft = 10;
+  let timeLeft = 30;
   let downloadTimer = setInterval(function () {
     $("#time").html("Time: " + timeLeft + " seconds remaining");
     timeLeft -= 1;
     if (timeLeft <= 0) {
-      console.log(timeLeft);
       clearInterval(downloadTimer);
       $("#time").html("Finished");
       $("#quiz-container").hide();
@@ -51,6 +54,35 @@ $("#start-button").on("click", function () {
       $("#finalScore").html("Your final score is " + correct + "!");
     }
   }, 1000);
+  // when any answer is clicked, do this...
+  $(".nextQuestion").on("click", function () {
+    // if click on correct answer, add to correct variable and display "Correct!" to user
+    if ($(this).text() === questions[currentIndex].answer) {
+      correct++;
+      console.log('number correct', correct);
+      $(".correct").show();
+      setTimeout(function () {
+        $('.correct').fadeOut('fast');
+      }, 1000);
+      // or, if click on incorrect answer, add to incorrect variable and display "Incorrect!" to user
+    } else {
+      incorrect++;
+      console.log('number incorrect', incorrect);
+      $(".incorrect").show();
+      setTimeout(function () {
+        $('.incorrect').fadeOut('fast');
+      }, 1000);
+      timeLeft = timeLeft - 10;
+    }
+    // if currentIndex is less than 4 (length of questions array), add one to currentIndex to get to next question & run new question
+    if (currentIndex < 4) {
+      currentIndex++;
+      setNextQuestion();
+    } else {
+      $("#quiz-container").hide();
+      $("#all-done").show();
+    }
+  });
 })
 
 function setNextQuestion() {
@@ -62,37 +94,5 @@ function setNextQuestion() {
   console.log(questions[currentIndex]);
   console.log('currentIndex', currentIndex);
 }
-
-
-let correct = 0
-let incorrect = 0
-
-
-// when any answer is clicked, do this...
-$(".nextQuestion").on("click", function () {
-  // if click on correct answer, add to correct variable and display "Correct!" to user
-  if ($(this).text() === questions[currentIndex].answer) {
-    console.log("correct!");
-    correct++;
-    console.log('number correct', correct);
-    $("#correctIncorrect").text("Correct!");
-    // or, if click on incorrect answer, add to incorrect variable and display "Incorrect!" to user
-  } else {
-    console.log("incorrect!");
-    incorrect++;
-    console.log('number incorrect', incorrect);
-    $("#correctIncorrect").text("Incorrect!");
-  }
-  // if currentIndex is less than 4 (length of questions array), add one to currentIndex to get to next question & run new question
-  if (currentIndex < 4) {
-    currentIndex++;
-    setNextQuestion();
-  } else {
-    $("#quiz-container").hide();
-    $("#all-done").show();
-  }
-});
-
-
 
 

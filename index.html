@@ -17,10 +17,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-6 text-left">
-                    <p id="highscore"><a href="highscore.html">View Highscores</a></p>
+                    <p id="highscore">View Highscores</p>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6 text-right">
-                    <p id="time">Time:</p>
+                    <p id="time">Time: 0</p>
                 </div>
             </div>
         </div>
@@ -56,23 +56,37 @@
         <div class="container">
             <h3 class="display-4">All done!</h3>
             <p id="finalScore"></p>
-            <form class="form-inline" id="enterInitials">
-                <div class="form-group mb-2">
-                    <label for="staticEmail2" class="sr-only">Initials</label>
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2"
-                        value="Enter initials:">
+            <form class="form-inline">
+                <div class="row">
+                    <div class="form-group col-lg-9">
+                        <label for="inputInitials" class="pr-1">Enter Initials: </label>
+                        <input type="text" class="form-control" id="enterInitials">
+                    </div>
+                    <div class="col-lg-3">
+                            <button type="button" id="submitInitials" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
                 </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="inputPassword2" class="sr-only"></label>
-                    <input type="text" class="form-control" id="inputPassword2">
-                </div>
-                <button onclick="highscore.html" type="submit" class="btn btn-primary mb-2"
-                    id="submitInitials">Submit</button>
             </form>
             <div class="correct">Correct!</div>
             <div class="incorrect">Incorrect!</div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="jumbotron" id="highscores-container">
+            <h2 class="display-4 text-center" id="highscoreTitle">Highscores</h2>
+            <div id="scoreList">
+                <div class="p-3 mb-2 bg-light text-dark"></div>
+            </div>
+            <div class="text-center">
+                <p class="lead">
+                    <a id="goBack" class="btn btn-primary btn-lg" href="index.html" role="button">Go Back</a>
+                    <a id="clearScores" class="btn btn-primary btn-lg" type="button">Clear Highscores</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="questions.js"></script>

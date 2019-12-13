@@ -1,3 +1,7 @@
+/* global $ */
+$(document).ready(function () {
+  console.log("Good to go!");
+});
 
 let questions = [
   {
@@ -31,6 +35,8 @@ $("#quiz-container").hide();
 $("#all-done").hide();
 $(".correct").hide();
 $(".incorrect").hide();
+$("#highscores-container").hide();
+
 
 let currentIndex = 0;
 let correct = 0;
@@ -42,7 +48,7 @@ $("#start-button").on("click", function () {
   $("#quiz-container").show();
   setNextQuestion();
   // timer
-  let timeLeft = 45;
+  let timeLeft = 75;
   let downloadTimer = setInterval(function () {
     $("#time").html("Time: " + timeLeft + " seconds remaining");
     timeLeft -= 1;
@@ -57,7 +63,7 @@ $("#start-button").on("click", function () {
   $(".nextQuestion").on("click", function () {
     // if click on correct answer, add to correct variable and display "Correct!" to user
     if ($(this).text() === questions[currentIndex].answer) {
-      correct++;
+      correct += 10;
       console.log('number correct', correct);
       $(".correct").show();
       setTimeout(function () {
@@ -80,6 +86,8 @@ $("#start-button").on("click", function () {
     } else {
       $("#quiz-container").hide();
       allDone();
+      clearInterval(downloadTimer);
+      $("#time").html("Finished with " + timeLeft + " seconds left!");
     }
   });
 })
@@ -94,7 +102,47 @@ function setNextQuestion() {
   console.log('currentIndex', currentIndex);
 }
 
-function allDone (){
+function allDone() {
   $("#all-done").show();
   $("#finalScore").html("Your final score is " + correct + "!");
 }
+
+let highScoreList = JSON.parse(localStorage.getItem('highScoreList')) || [];
+
+function generateHighscore (){
+  localStorage.setItem('highScoreList', JSON.stringify(highScoreList));
+  for (let i = 0; i < highScoreList.length; i++) {
+    const currentUser = highScoreList[i];
+    console.log(currentUser);
+    $("#scoreList").prepend("<br><hr>" + currentUser.userInitials + " - " + currentUser.score);
+  }
+}
+
+
+$("#submitInitials").on("click", function () {
+  let newUser = {
+    userInitials: $("#enterInitials").val(),
+    score: correct
+  }
+  highScoreList.push(newUser);
+  generateHighscore();
+  $("#all-done").hide();
+  $("#highscores-container").show();
+})
+
+$("#highscore").on("click", function() {
+  $("#highscores-container").show();
+  $("#startScreen").hide();
+  generateHighscore();
+})
+
+
+// style highscores link 
+// hide highscores link when quiz is going
+
+// click clear and it clears localStorage
+$("#clearScores").on("click", function () {
+  localStorage.clear();
+  $("#scoreList").empty();
+  highScoreList = [];
+})

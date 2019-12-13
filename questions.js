@@ -1,8 +1,4 @@
-/* global $ */
-$(document).ready(function () {
-  console.log("Good to go!");
-});
-
+// object containing quiz questions
 let questions = [
   {
     title: "JavaScript is...",
@@ -31,20 +27,33 @@ let questions = [
   }
 ];
 
+// hide all divs not currently being used
 $("#quiz-container").hide();
 $("#all-done").hide();
 $(".correct").hide();
 $(".incorrect").hide();
 $("#highscores-container").hide();
 
-
+// set question and scores to 0
 let currentIndex = 0;
 let correct = 0;
 let incorrect = 0;
 
+// cycles through questions on screen
+function setNextQuestion() {
+  $("#askQuestion").text(questions[currentIndex].title);
+  $("#option1").text(questions[currentIndex].choices[0]);
+  $("#option2").text(questions[currentIndex].choices[1]);
+  $("#option3").text(questions[currentIndex].choices[2]);
+  $("#option4").text(questions[currentIndex].choices[3]);
+  console.log(questions[currentIndex]);
+  console.log('currentIndex', currentIndex);
+}
+
+// when 'start' is clicked, show quiz container, cycle through questions, start timer
 $("#start-button").on("click", function () {
-  console.log("The button works!");
   $("#startScreen").hide();
+  $("#highscore").hide();
   $("#quiz-container").show();
   setNextQuestion();
   // timer
@@ -61,18 +70,16 @@ $("#start-button").on("click", function () {
   }, 1000);
   // when any answer is clicked, do this...
   $(".nextQuestion").on("click", function () {
-    // if click on correct answer, add to correct variable and display "Correct!" to user
+    // if correct answer is clicked, add to 'correct' variable and display "Correct!" to user
     if ($(this).text() === questions[currentIndex].answer) {
       correct += 10;
-      console.log('number correct', correct);
       $(".correct").show();
       setTimeout(function () {
         $('.correct').fadeOut('fast');
       }, 1000);
-      // or, if click on incorrect answer, add to incorrect variable and display "Incorrect!" to user
+      // or, if incorrect answer is clicked, add to 'incorrect' variable, display "Incorrect!" to user, and deduct 10 seconds from timer
     } else {
       incorrect++;
-      console.log('number incorrect', incorrect);
       $(".incorrect").show();
       setTimeout(function () {
         $('.incorrect').fadeOut('fast');
@@ -83,6 +90,7 @@ $("#start-button").on("click", function () {
     if (currentIndex < 4) {
       currentIndex++;
       setNextQuestion();
+      // otherwise, finish quiz and move to all-done page 
     } else {
       $("#quiz-container").hide();
       allDone();
@@ -92,24 +100,19 @@ $("#start-button").on("click", function () {
   });
 })
 
-function setNextQuestion() {
-  $("#askQuestion").text(questions[currentIndex].title);
-  $("#option1").text(questions[currentIndex].choices[0]);
-  $("#option2").text(questions[currentIndex].choices[1]);
-  $("#option3").text(questions[currentIndex].choices[2]);
-  $("#option4").text(questions[currentIndex].choices[3]);
-  console.log(questions[currentIndex]);
-  console.log('currentIndex', currentIndex);
-}
-
+// jumps to all-done page
 function allDone() {
   $("#all-done").show();
   $("#finalScore").html("Your final score is " + correct + "!");
+  $("#highscore").show();
 }
 
+
+// STORE SCORES
 let highScoreList = JSON.parse(localStorage.getItem('highScoreList')) || [];
 
-function generateHighscore (){
+// function that stores initials/scores to local storage and adds each one to the scoreboard
+function generateHighscore() {
   localStorage.setItem('highScoreList', JSON.stringify(highScoreList));
   for (let i = 0; i < highScoreList.length; i++) {
     const currentUser = highScoreList[i];
@@ -118,7 +121,7 @@ function generateHighscore (){
   }
 }
 
-
+// when initials & score are submitted, store them into an object and push into highScoreList
 $("#submitInitials").on("click", function () {
   let newUser = {
     userInitials: $("#enterInitials").val(),
@@ -127,20 +130,21 @@ $("#submitInitials").on("click", function () {
   highScoreList.push(newUser);
   generateHighscore();
   $("#all-done").hide();
+  $("#highscore").show();
   $("#highscores-container").show();
 })
 
-$("#highscore").on("click", function() {
+// when 'highscore' link is clicked, show highscore page
+$("#highscore").on("click", function () {
   $("#highscores-container").show();
   $("#startScreen").hide();
   generateHighscore();
 })
 
+// highscore link style
+document.querySelector("#highscore").style.color = "blue";
 
-// style highscores link 
-// hide highscores link when quiz is going
-
-// click clear and it clears localStorage
+// click clear and it clears localStorage & page
 $("#clearScores").on("click", function () {
   localStorage.clear();
   $("#scoreList").empty();
